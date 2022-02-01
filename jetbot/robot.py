@@ -1,8 +1,8 @@
 import time
 import traitlets
 from traitlets.config.configurable import SingletonConfigurable
-from Adafruit_MotorHAT import Adafruit_MotorHAT
-from .motor import Motor
+from .Waveshare_MotorHAT.Waveshare_Motors import Waveshare_MotorHAT
+from .motor_waveshare import Motor
 
 
 class Robot(SingletonConfigurable):
@@ -12,14 +12,14 @@ class Robot(SingletonConfigurable):
 
     # config
     i2c_bus = traitlets.Integer(default_value=1).tag(config=True)
-    left_motor_channel = traitlets.Integer(default_value=1).tag(config=True)
+    left_motor_channel = traitlets.Integer(default_value=2).tag(config=True)
     left_motor_alpha = traitlets.Float(default_value=1.0).tag(config=True)
-    right_motor_channel = traitlets.Integer(default_value=2).tag(config=True)
+    right_motor_channel = traitlets.Integer(default_value=1).tag(config=True)
     right_motor_alpha = traitlets.Float(default_value=1.0).tag(config=True)
     
     def __init__(self, *args, **kwargs):
         super(Robot, self).__init__(*args, **kwargs)
-        self.motor_driver = Adafruit_MotorHAT(i2c_bus=self.i2c_bus)
+        self.motor_driver = Waveshare_MotorHAT(i2c_bus=self.i2c_bus)
         self.left_motor = Motor(self.motor_driver, channel=self.left_motor_channel, alpha=self.left_motor_alpha)
         self.right_motor = Motor(self.motor_driver, channel=self.right_motor_channel, alpha=self.right_motor_alpha)
         
