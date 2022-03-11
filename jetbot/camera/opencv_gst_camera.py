@@ -47,7 +47,9 @@ class OpenCvGstCamera(CameraBase):
                 break
                 
     def _gst_str(self):
-        return 'nvarguscamerasrc sensor-mode=3 ! video/x-raw(memory:NVMM), width=%d, height=%d, format=(string)NV12, framerate=(fraction)%d/1 ! nvvidconv ! video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert ! appsink' % (
+        #return 'nvarguscamerasrc sensor-mode=3 ! video/x-raw(memory:NVMM), width=%d, height=%d, format=(string)NV12, framerate=(fraction)%d/1 ! nvvidconv ! video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert ! appsink' % (
+        #        self.capture_width, self.capture_height, self.fps, self.width, self.height)
+        return 'nvv4l2camerasrc ! video/x-raw(memory:NVMM), format=(string)UYVY, width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! nvvidconv ! video/x-raw(memory:NVMM), format=(string)I420 ! nvvidconv ! video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink' % (
                 self.capture_width, self.capture_height, self.fps, self.width, self.height)
     
     def start(self):
